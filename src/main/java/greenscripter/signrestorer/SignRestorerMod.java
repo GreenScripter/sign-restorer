@@ -1,7 +1,6 @@
 package greenscripter.signrestorer;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import java.io.BufferedReader;
@@ -15,8 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
+import greenscripter.signrestorer.data.SignData;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -27,7 +26,7 @@ import net.minecraft.text.Text;
 public class SignRestorerMod implements ModInitializer {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger("sign-restorer");
-	public static List<Map<String, SignData>> signData = null;
+	public static Map<String, SignData> signData = null;
 	public static boolean enabled = false;
 	private static KeyBinding stateChangeKeybind;
 
@@ -58,15 +57,21 @@ public class SignRestorerMod implements ModInitializer {
 		try {
 			Gson gson = new Gson();
 			fileData = fetchFile();
-			signData = gson.fromJson(fileData, new TypeToken<ArrayList<Map<String, SignData>>>() {
-			}.getType());
+			SignData[] signDataJson = gson.fromJson(fileData, SignData[].class);
+
+			signData = new HashMap<>();
+
+			for (SignData s : signDataJson) {
+				if (s == null) continue;
+				signData.put(s.coordinates, s);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	public static String fetchFile() throws IOException {
-		URL url = new URL("https://raw.githubusercontent.com/barrulik/sign-restorer-data/main/signData.json");
+		URL url = new URL("https://raw.githubusercontent.com/GreenScripter/sign-restorer/master/signData.json");
 		URLConnection urlConnection = url.openConnection();
 		urlConnection.setConnectTimeout(1000);
 		urlConnection.setReadTimeout(1000);

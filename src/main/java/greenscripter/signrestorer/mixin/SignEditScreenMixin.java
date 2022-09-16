@@ -7,8 +7,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import greenscripter.signrestorer.SignData;
 import greenscripter.signrestorer.SignRestorerMod;
+import greenscripter.signrestorer.data.SignData;
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.client.gui.screen.ingame.SignEditScreen;
 import net.minecraft.util.math.BlockPos;
@@ -29,14 +29,7 @@ public abstract class SignEditScreenMixin {
 		if (!SignRestorerMod.enabled) return;
 
 		BlockPos pos = sign.getPos();
-		SignData data = null;
-		SignData tempData = null;
-		for (int i = 0; i < SignRestorerMod.signData.size(); i++) {
-			tempData = SignRestorerMod.signData.get(i).get(pos.getX() + " " + pos.getY() + " " + pos.getZ());
-			if (tempData != null) {
-				data = tempData;
-			}
-		}
+		SignData data = SignRestorerMod.signData.get(pos.getX() + " " + pos.getY() + " " + pos.getZ());
 		if (data == null) return;
 
 		for (int i = 0; i < 4; i++)

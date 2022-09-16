@@ -1,10 +1,7 @@
-package greenscripter.signrestorer;
-
-import java.util.HashMap;
-import java.util.Map;
+package greenscripter.signrestorer.data;
 
 public class SignData {
 
+	public String coordinates = "";
 	public String[] text = new String[] { "", "", "", "" };
-	public Map<String, String> flags = new HashMap<>();
 }
