@@ -32,11 +32,7 @@ public class SignRestorerMod implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		try {
-			reloadSignData();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		reloadSignData();
 
 		stateChangeKeybind = KeyBindingHelper.registerKeyBinding(new KeyBinding("Change Sign Restorer State", // The translation key of the keybinding's name
 				InputUtil.Type.KEYSYM, // The type of the keybinding, KEYSYM for keyboard, MOUSE for mouse.
@@ -52,7 +48,7 @@ public class SignRestorerMod implements ModInitializer {
 		});
 	}
 
-	public static void reloadSignData() throws IOException {
+	public static void reloadSignData() {
 		String fileData = null;
 		try {
 			Gson gson = new Gson();
