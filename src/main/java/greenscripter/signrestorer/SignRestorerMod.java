@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 
 import greenscripter.signrestorer.data.SignData;
+import greenscripter.signrestorer.data.SignRestorerConfig;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -32,9 +33,11 @@ public class SignRestorerMod implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		SignRestorerConfig.loadConfig();
+
 		reloadSignData();
 
-		stateChangeKeybind = KeyBindingHelper.registerKeyBinding(new KeyBinding("Change Sign Restorer State", // The translation key of the keybinding's name
+		stateChangeKeybind = KeyBindingHelper.registerKeyBinding(new KeyBinding("Toggle Sign Restorer", // The translation key of the keybinding's name
 				InputUtil.Type.KEYSYM, // The type of the keybinding, KEYSYM for keyboard, MOUSE for mouse.
 				GLFW.GLFW_KEY_B, // The keycode of the key
 				"Sign Restorer" // The translation key of the keybinding's category.
@@ -67,7 +70,7 @@ public class SignRestorerMod implements ModInitializer {
 	}
 
 	public static String fetchFile() throws IOException {
-		URL url = new URL("https://raw.githubusercontent.com/GreenScripter/sign-restorer/master/signData.json");
+		URL url = new URL(SignRestorerConfig.config.url);
 		URLConnection urlConnection = url.openConnection();
 		urlConnection.setConnectTimeout(1000);
 		urlConnection.setReadTimeout(1000);
