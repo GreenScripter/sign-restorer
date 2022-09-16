@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -52,13 +53,13 @@ public class SignRestorerMod implements ModInitializer {
 	}
 
 	public static void reloadSignData() {
+		signData = new HashMap<>();
+
 		String fileData = null;
 		try {
 			Gson gson = new Gson();
 			fileData = fetchFile();
 			SignData[] signDataJson = gson.fromJson(fileData, SignData[].class);
-
-			signData = new HashMap<>();
 
 			for (SignData s : signDataJson) {
 				if (s == null) continue;
@@ -70,12 +71,16 @@ public class SignRestorerMod implements ModInitializer {
 	}
 
 	public static String fetchFile() throws IOException {
-		URL url = new URL(SignRestorerConfig.config.url);
-		URLConnection urlConnection = url.openConnection();
-		urlConnection.setConnectTimeout(1000);
-		urlConnection.setReadTimeout(1000);
-		BufferedReader breader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-
+		BufferedReader breader;
+		if (SignRestorerConfig.config.file != null) {
+			breader = new BufferedReader(new FileReader(SignRestorerConfig.config.file));
+		} else {
+			URL url = new URL(SignRestorerConfig.config.url);
+			URLConnection urlConnection = url.openConnection();
+			urlConnection.setConnectTimeout(1000);
+			urlConnection.setReadTimeout(1000);
+			breader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+		}
 		String output = "";
 		String line;
 		while ((line = breader.readLine()) != null) {

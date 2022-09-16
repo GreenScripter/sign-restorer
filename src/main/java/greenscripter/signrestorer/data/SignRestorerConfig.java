@@ -41,4 +41,5 @@ public class SignRestorerConfig {
 	}
 
 	public String url = "https://raw.githubusercontent.com/GreenScripter/sign-restorer/master/signData.json";
+	public String file = null;
 }

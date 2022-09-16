@@ -6,6 +6,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import greenscripter.signrestorer.SignRestorerMod;
+import greenscripter.signrestorer.data.SignRestorerConfig;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.text.Text;
@@ -19,6 +20,11 @@ public abstract class ClientPlayerEntityMixin {
 		if (message.equals("&reloadsigns") || message.equals("&signsreload")) {
 			SignRestorerMod.reloadSignData();
 			MinecraftClient.getInstance().player.sendMessage(Text.literal("§7 Reloaded sign data."), false);
+			ci.cancel();
+		}
+		if (message.equals("&reloadconfig")) {
+			SignRestorerConfig.loadConfig();
+			MinecraftClient.getInstance().player.sendMessage(Text.literal("§7 Reloaded sign restorer config."), false);
 			ci.cancel();
 		}
 	}
