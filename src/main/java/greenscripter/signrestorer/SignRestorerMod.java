@@ -23,7 +23,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.Text;
+import net.minecraft.text.LiteralText;
 
 public class SignRestorerMod implements ModInitializer {
 
@@ -47,7 +47,7 @@ public class SignRestorerMod implements ModInitializer {
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			while (stateChangeKeybind.wasPressed()) {
 				enabled = !enabled;
-				client.player.sendMessage(Text.literal("§7 Sign Restorer is now " + (enabled ? "enabled" : "disabled")), false);
+				client.player.sendMessage(new LiteralText("§7 Sign Restorer is now " + (enabled ? "enabled" : "disabled")), false);
 			}
 		});
 	}
